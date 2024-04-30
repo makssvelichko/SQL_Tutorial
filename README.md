@@ -1,15 +1,14 @@
-# SQL_Tutorial
 - [Введення в SQL](#введення-в-sql)
-
 - [Синтаксис SQL](#синтаксис-sql)
-
 - [Інструкція SQL SELECT](#інструкція-sql-select)
- 
 - [Інструкція SQL SELECT DISTINCT](#інструкція-sql-select-distinct)
-
 - [SQL WHERE](#sql-where)
- 
 - [SQL ORDER BY](#sql-order-by)
+- [Оператор SQL AND](#оператор-sql-and)
+- [Оператор OR](#оператор-sql-or)
+- [Оператор NOT](#оператор-sql-not)
+- [Інструкція SQL INSERT INTO](#інструкція-sql-insert-into)
+- 
  
 
 <a name="Введення_в_SQL"></a>
@@ -309,3 +308,285 @@ ORDER BY Country, CustomerName;
 SELECT * FROM Customers
 ORDER BY Country ASC, CustomerName DESC;
 ```
+___
+<a name="Оператор_SQL_AND"></a>
+# Оператор SQL AND
+
+`WHERE` може містити один або кілька `AND` операторів.
+
+Оператор `AND` використовується для фільтрації записів на основі кількох умов, наприклад, якщо ви хочете повернути всіх клієнтів з Іспанії, які починаються з літери «G»:
+
+### приклад
+Виберіть усіх клієнтів з Іспанії, які починаються з літери "G":
+```sql
+SELECT *
+FROM Customers
+WHERE Country = 'Spain' AND CustomerName LIKE 'G%';
+```
+
+Синтаксис
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 AND condition2 AND condition3 ...;
+```
+
+## І проти АБО
+Оператор `AND` виводить запис, якщо всі умови ІСТИННІ.
+
+Оператор `OR` виводить запис, якщо будь-яка з умов є TRUE.
+
+## Демонстраційна база даних
+Нижче наведено вибірку з таблиці "Клієнти" , яка використовується в прикладах:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Alfreds Futterkiste | Maria Anders | Obere Str. 57 | Berlin | 12209 | Germany |
+| 2 | Ana Trujillo Emparedados y helados | Ana Trujillo | Avda. de la Constitución 2222 | México D.F. | 05021 | Mexico |
+| 3 | Antonio Moreno Taquería | Antonio Moreno | Mataderos 2312 | México D.F. | 05023 | Mexico |
+| 4 | Around the Horn | Thomas Hardy | 120 Hanover Sq. | London | WA1 1DP | UK |
+| 5 | Berglunds snabbköp | Christina Berglund | Berguvsvägen 8 | Luleå | S-958 22 | Sweden |
+
+## Усі умови мають відповідати дійсності
+У наведеному нижче операторі SQL вибираються всі поля, серед `Customers` яких `Country` «Німеччина» ТА `City` «Берлін» ТА `PostalCode` більше 12000:
+### приклад
+```sql
+SELECT * FROM Customers
+WHERE Country = 'Germany'
+AND City = 'Berlin'
+AND PostalCode > 12000;
+```
+
+## Поєднання І та АБО
+Ви можете комбінувати оператори ANDі OR.
+
+Наступний оператор SQL вибирає всіх клієнтів з Іспанії, які починаються з «G» або «R».
+
+Переконайтеся, що ви використовуєте дужки, щоб отримати правильний результат.
+
+### приклад
+Виберіть усіх іспанських клієнтів, які починаються на "G" або "R":
+```sql
+SELECT * FROM Customers
+WHERE Country = 'Spain' AND (CustomerName LIKE 'G%' OR CustomerName LIKE 'R%');
+```
+
+Без дужок оператор `select` поверне всіх клієнтів з Іспанії, які починаються з «G», а також усіх клієнтів, які починаються з «R», незалежно від значення країни:
+
+### приклад
+Виберіть усіх клієнтів, які:
+з Іспанії та починаються з літери "G" або
+літери "R":
+```sql
+SELECT * FROM Customers
+WHERE Country = 'Spain' AND CustomerName LIKE 'G%' OR CustomerName LIKE 'R%';
+```
+___
+<a name="Оператор_SQL_OR"></a>
+# Оператор SQL OR
+`WHERE` може містити один або декілька `OR` операторів.
+
+Оператор `OR` використовується для фільтрації записів на основі більш ніж однієї умови, наприклад, якщо ви хочете повернути всіх клієнтів з Німеччини, а також клієнтів з Іспанії:
+
+приклад
+Виберіть усіх клієнтів з Німеччини чи Іспанії:
+```sql
+SELECT *
+FROM Customers
+WHERE Country = 'Germany' OR Country = 'Spain';
+```
+
+## Синтаксис
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 OR condition2 OR condition3 ...;
+```
+
+## Демонстраційна база даних
+Нижче наведено вибірку з таблиці "Клієнти" , яка використовується в прикладах:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Alfreds Futterkiste | Maria Anders | Obere Str. 57 | Berlin | 12209 | Germany |
+| 2 | Ana Trujillo Emparedados y helados | Ana Trujillo | Avda. de la Constitución 2222 | México D.F. | 05021 | Mexico |
+| 3 | Antonio Moreno Taquería | Antonio Moreno | Mataderos 2312 | México D.F. | 05023 | Mexico |
+| 4 | Around the Horn | Thomas Hardy | 120 Hanover Sq. | London | WA1 1DP | UK |
+| 5 | Berglunds snabbköp | Christina Berglund | Berguvsvägen 8 | Luleå | S-958 22 | Sweden |
+
+
+## Принаймні одна умова має виконуватися
+Наступна інструкція SQL вибирає всі поля від клієнтів, де або `City` "Берлін", `Customer` Nameпочинається з літери "G" або `Country` "Норвегія": 
+
+### приклад
+```sql
+SELECT * FROM Customers
+WHERE City = 'Berlin' OR CustomerName LIKE 'G%' OR Country = 'Norway';
+```
+___
+<a name="Оператор_SQL_NOT"></a>
+# Оператор SQL NOT
+Оператор `NOT` використовується в поєднанні з іншими операторами для отримання протилежного результату, який також називають негативним результатом.
+
+У операторі select нижче ми хочемо повернути всіх клієнтів, які НЕ з Іспанії:
+
+### приклад
+Виберіть лише клієнтів, які НЕ з Іспанії:
+```sql
+SELECT * FROM Customers
+WHERE NOT Country = 'Spain';
+```
+
+У прикладі вище `NOT` оператор використовується в комбінації з `=` оператором, але його можна використовувати в комбінації з іншими операторами порівняння та/або логічними операторами. Дивіться приклади нижче.
+
+## Синтаксис
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE NOT condition;
+```
+
+## Демонстраційна база даних
+Нижче наведено вибірку з таблиці "Клієнти" , яка використовується в прикладах:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Alfreds Futterkiste | Maria Anders | Obere Str. 57 | Berlin | 12209 | Germany |
+| 2 | Ana Trujillo Emparedados y helados | Ana Trujillo | Avda. de la Constitución 2222 | México D.F. | 05021 | Mexico |
+| 3 | Antonio Moreno Taquería | Antonio Moreno | Mataderos 2312 | México D.F. | 05023 | Mexico |
+| 4 | Around the Horn | Thomas Hardy | 120 Hanover Sq. | London | WA1 1DP | UK |
+| 5 | Berglunds snabbköp | Christina Berglund | Berguvsvägen 8 | Luleå | S-958 22 | Sweden |
+
+## NOT LIKE
+### приклад
+Виберіть клієнтів, які не починаються з літери «А»:
+```sql
+SELECT * FROM Customers
+WHERE CustomerName NOT LIKE 'A%';
+```
+
+## NOT BETWEEN
+### приклад
+Виберіть клієнтів із ідентифікатором клієнта не між 10 і 60:
+```sql
+SELECT * FROM Customers
+WHERE CustomerID NOT BETWEEN 10 AND 60;
+```
+
+## NOT IN
+### приклад
+Виберіть клієнтів, які не з Парижа чи Лондона:
+```sql
+SELECT * FROM Customers
+WHERE City NOT IN ('Paris', 'London');
+```
+
+## НЕ більше ніж
+### приклад
+Виберіть клієнтів з CustomerId не більше 50:
+```sql
+SELECT * FROM Customers
+WHERE NOT CustomerID > 50;
+```
+**Примітка**: існує оператор не більше: `!>` це дасть той самий результат.
+
+## НЕ менше
+### приклад
+Виберіть клієнтів з CustomerID не менше 50:
+```sql
+SELECT * FROM Customers
+WHERE NOT CustomerId < 50;
+```
+**Примітка**: існує оператор not-меньше-тоді: `!<` це дасть вам той самий результат.
+
+___
+<a name="Інструкція_SQL_INSERT_INTO"></a>
+# Інструкція SQL INSERT INTO
+Інструкція `INSERT INTO` використовується для вставки нових записів у таблицю.
+
+## INSERT INTO Синтаксис
+Написати заяву можна `INSERT INTO` двома способами:
+
+1. Вкажіть назви стовпців і значення, які потрібно вставити:
+```sql
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+```
+2. Якщо ви додаєте значення для всіх стовпців таблиці, вам не потрібно вказувати назви стовпців у SQL-запиті. Однак переконайтеся, що порядок значень відповідає порядку стовпців у таблиці.
+Тут `INSERT INTO` синтаксис буде таким:
+```sql
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+```
+
+## Демонстраційна база даних
+Нижче наведено вибірку з таблиці "Клієнти" , яка використовується в прикладах:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 89 | White Clover Markets | Karl Jablonski | 305 - 14th Ave. S. Suite 3B | Seattle | 98128 | USA |
+| 90 | Wilman Kala | Matti Karttunen | Keskuskatu 45 | Helsinki | 21240 | Finland |
+| 91 | Wolski | Zbyszek | ul. Filtrowa 68 | Walla | 01-012 | Poland |
+
+## INSERT INTO Приклад
+Наступний оператор SQL вставляє новий запис у таблицю "Клієнти":
+### приклад
+```sql
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+```
+
+Вибір із таблиці «Клієнти» тепер виглядатиме так:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 89 | White Clover Markets | Karl Jablonski | 305 - 14th Ave. S. Suite 3B | Seattle | 98128 | USA |
+| 90 | Wilman Kala | Matti Karttunen | Keskuskatu 45 | Helsinki | 21240 | Finland |
+| 91 | Wolski | Zbyszek | ul. Filtrowa 68 | Walla | 01-012 | Poland |
+| 92 | Cardinal | Tom B. Erichsen | Skagen 21 | Stavanger | 4006 | Norway |
+
+## Вставити дані лише у вказані стовпці
+Також можна вставляти дані лише в певні стовпці.
+
+Наступний оператор SQL вставить новий запис, але вставить дані лише в стовпці «CustomerName», «City» і «Country» (CustomerID буде оновлено автоматично):
+
+### приклад
+```sql
+INSERT INTO Customers (CustomerName, City, Country)
+VALUES ('Cardinal', 'Stavanger', 'Norway');
+```
+Вибір із таблиці «Клієнти» тепер виглядатиме так:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 89 | White Clover Markets | Karl Jablonski | 305 - 14th Ave. S. Suite 3B | Seattle | 98128 | USA |
+| 90 | Wilman Kala | Matti Karttunen | Keskuskatu 45 | Helsinki | 21240 | Finland |
+| 91 | Wolski | Zbyszek | ul. Filtrowa 68 | Walla | 01-012 | Poland |
+| 92 | Cardinal | null | null | Stavanger | null | Norway |
+
+## Вставити кілька рядків
+Також можна вставити кілька рядків в один оператор.
+
+Щоб вставити кілька рядків даних, ми використовуємо той самий `INSERT INTO` оператор, але з кількома значеннями:
+
+### приклад
+```sql
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES
+('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway'),
+('Greasy Burger', 'Per Olsen', 'Gateveien 15', 'Sandnes', '4306', 'Norway'),
+('Tasty Tee', 'Finn Egan', 'Streetroad 19B', 'Liverpool', 'L1 0AA', 'UK');
+```
+Обов’язково розділяйте кожен набір значень комою `,`.
+
+Вибір із таблиці «Клієнти» тепер виглядатиме так:
+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
+| --- | --- | --- | --- | --- | --- | --- |
+| 89 | White Clover Markets | Karl Jablonski | 305 - 14th Ave. S. Suite 3B | Seattle | 98128 | USA |
+| 90 | Wilman Kala | Matti Karttunen | Keskuskatu 45 | Helsinki | 21240 | Finland |
+| 91 | Wolski | Zbyszek | ul. Filtrowa 68 | Walla | 01-012 | Poland |
+| 92 | Cardinal | Tom B. Erichsen | Skagen 21 | Stavanger | 4006 | Norway |
+| 93 | Greasy Burger | Per Olsen | Gateveien 15 | Sandnes | 4306 | Norway |
+| 94 | Tasty Tee | Finn Egan | Streetroad 19B | Liverpool | L1 0AA | UK |
+
