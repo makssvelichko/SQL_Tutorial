@@ -2136,10 +2136,10 @@ INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
 `RIGHT (OUTER) JOIN`: повертає всі записи з правої таблиці та відповідні записи з лівої таблиці
 `FULL (OUTER) JOIN`: повертає всі записи, якщо є відповідність у лівій або правій таблиці
 
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
+![alt text](img/image.png)
+![alt text](img/image-1.png)
+![alt text](img/image-2.png)
+![alt text](img/image-3.png)
 
 ___
 # SQL INNER JOIN
@@ -2175,7 +2175,7 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 </div>
 
 ##
-![alt text](image-4.png)
+![alt text](img/image-4.png)
 
 #### Примітка. Ключове `INNER JOIN` слово повертає лише рядки з відповідністю в обох таблицях. Це означає, що якщо у вас є продукт без CategoryID або з CategoryID, якого немає в таблиці Categories, цей запис не буде повернено в результаті.
 
@@ -2247,7 +2247,7 @@ ON table1.column_name = table2.column_name;
 
 #### Примітка. У деяких базах даних LEFT JOIN називається LEFT OUTER JOIN.
 
-![alt text](image-5.png)
+![alt text](img/image-5.png)
 
 ## Демонстраційна база даних
 У цьому підручнику ми будемо використовувати відомий приклад бази даних Northwind.
@@ -2295,7 +2295,7 @@ ON table1.column_name = table2.column_name;
 
 #### Примітка. У деяких базах даних `RIGHT JOIN` називається `RIGHT OUTER JOIN`.
 
-![alt text](image-6.png)
+![alt text](img/image-6.png)
 
 Демонстраційна база даних
 У цьому підручнику ми будемо використовувати відомий приклад бази даних Northwind.
@@ -2343,7 +2343,7 @@ ON table1.column_name = table2.column_name
 WHERE condition;
 ```
 
-![alt text](image-7.png)
+![alt text](img/image-7.png)
 
 ## Демонстраційна база даних
 У цьому підручнику ми будемо використовувати відомий приклад бази даних Northwind.
